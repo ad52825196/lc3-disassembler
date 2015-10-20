@@ -12,8 +12,12 @@ int main(int argc, char *argv[])
     }
 
     FILE *file = fopen(argv[1], "r");
-    int input, i, ins[12];
+    int input, pc = 0, i, ins[12];
     char opcode;
+
+    if (argc > 2) {
+        sscanf(argv[2], "%x", &pc);
+    }
 
     // process each line
     while (fscanf(file, "%c%x\n", &opcode, &input) != EOF) {
@@ -24,7 +28,24 @@ int main(int argc, char *argv[])
             input /= 2;
         }
 
+        // increment program counter
+        pc++;
+
         switch (opcode) {
+            case '0':
+                fputs("br", stdout);
+                if (ins[0]) {
+                    putchar('n');
+                }
+                if (ins[1]) {
+                    putchar('z');
+                }
+                if (ins[2]) {
+                    putchar('p');
+                }
+                putchar(' ');
+                printf("%#x", pc + binToDec(ins, 3, 9, true));
+                break;
             case '1':
                 fputs("add ", stdout);
                 printAddAnd(ins);
