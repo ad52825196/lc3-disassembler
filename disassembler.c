@@ -1,7 +1,8 @@
 #include <stdio.h>
+#include <stdbool.h>
 
 void printAddAnd(int*);
-int binToDec(int*, int, int);
+int binToDec(int*, int, int, bool);
 
 int main(int argc, char *argv[])
 {
@@ -45,19 +46,28 @@ int main(int argc, char *argv[])
 }
 
 void printAddAnd(int *ins) {
-    printf("%c%d", 'r', binToDec(ins, 0, 3));
+    printf("%c%d", 'r', binToDec(ins, 0, 3, false));
     putchar(',');
-    printf("%c%d", 'r', binToDec(ins, 3, 3));
+    printf("%c%d", 'r', binToDec(ins, 3, 3, false));
     putchar(',');
-    printf("%c%d", 'r', binToDec(ins, 9, 3));
+    if (ins[6]) {
+        printf("%d", binToDec(ins, 7, 5, true));
+    } else {
+        printf("%c%d", 'r', binToDec(ins, 9, 3, false));
+    }
 }
 
-int binToDec(int *a, int start, int length) {
+int binToDec(int *a, int start, int length, bool isSigned) {
     int base = 1, res = 0, i;
 
-    for (i = start + length - 1; i >= start; i--) {
+    for (i = start + length - 1; i > start; i--) {
         res += a[i] * base;
         base *= 2;
+    }
+    if (isSigned) {
+        res -= a[i] * base;
+    } else {
+        res += a[i] * base;
     }
 
     return res;
