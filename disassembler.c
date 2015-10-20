@@ -33,6 +33,10 @@ int main(int argc, char *argv[])
                 fputs("and ", stdout);
                 printAddAnd(ins);
                 break;
+            case 'c':
+                fputs("jmp ", stdout);
+                printf("%c%d", 'r', binToDec(ins, 3, 3, false));
+                break;
             default:
                 fputs("Invalid instruction", stdout);
                 break;
